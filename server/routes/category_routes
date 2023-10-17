@@ -1,0 +1,43 @@
+from flask import Blueprint, request, jsonify
+from server import db
+from server.models.category import Category
+
+category_routes = Blueprint('category_routes', __name__)
+
+
+@category_routes.route('/categories', methods=['GET'])
+def get_categories():
+    categories = Category.query.all()
+    return jsonify([category.serialize() for category in categories])
+
+
+@category_routes.route('/categories', methods=['POST'])
+def create_category():
+    data = request.get_json()
+    name = data.get('name')
+    # You can validate and add more error handling here
+    category = Category(name=name)
+    db.session.add(category)
+    db.session.commit()
+    return jsonify(category.serialize()), 201
+
+
+@category_routes.route('/categories/<int:id>', methods=['PUT'])
+def update_category(id):
+    category = Category.query.get(id)
+    if not category:
+        return jsonify({'error': 'Category not found'}), 404
+    data = request.get_json()
+    category.name = data.get('name')
+    db.session.commit()
+    return jsonify(category.serialize())
+
+
+@category_routes.route('/categories/<int:id>', methods=['DELETE'])
+def delete_category(id):
+    category = Category.query.get(id)
+    if not category:
+        return jsonify({'error': 'Category not found'}), 404
+    db.session.delete(category)
+    db.session.commit()
+    return jsonify({'message': 'Category deleted'})
