@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+faker = "*"
 flask = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
@@ -11,6 +12,9 @@ flask-restful = "*"
 sqlalchemy-serializer = "*"
 python-dotenv = "*"
 jsonify = "*"
+ipdb = "*"
+pytest = "*"
+
 
 
 [dev-packages]
