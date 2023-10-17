@@ -9,6 +9,9 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-restful = "*"
 sqlalchemy-serializer = "*"
+python-dotenv = "*"
+jsonify = "*"
+
 
 [dev-packages]
 
