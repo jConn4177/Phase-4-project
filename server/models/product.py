@@ -1,4 +1,4 @@
-from server import db
+from server.app import db
 from server.models.serializers import SerializableMixin
 
 product_categories = db.Table(
