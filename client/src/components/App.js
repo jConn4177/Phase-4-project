@@ -6,6 +6,7 @@ import Login from "./Login";
 import AppNavbar from "./AppNavbar";
 import Register from "./Register"
 import EditUser from "./EditUser";
+import ProductForm from "./NewProductForm";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/edituser/:userId" element={<EditUser />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/productform" element={<ProductForm />} />
         </Routes>
       </div>
     </Router>
