@@ -16,8 +16,6 @@ db = SQLAlchemy(metadata=metadata)
 bcrypt = Bcrypt()
 
 class User(db.Model):
-    __tablename__ = "users"
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(41), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -48,3 +46,9 @@ class Product(db.Model):
     count = db.Column(db.Integer, nullable=False)
     category = db.Column(Enum('Aviator', 'Wayfarer', 'Round',
                          'Sports', 'Designer', 'Oversized', 'Cat-Eye'), nullable=True)
+
+class Cart(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # 'users.id' instead of 'user.id'
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+
