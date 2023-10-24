@@ -5,14 +5,14 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/Users/<int:user_id>/Cart")
+    fetch("http://127.0.0.1:5000/users/<int:user_id>/cart")
       .then((response) => response.json())
       .then((data) => setCartItems(data))
       .catch((error) => console.error("Error fetching cart items:", error));
   }, []);
 
   const handleRemoveItem = (productId) => {
-    fetch(`http://127.0.0.1:5000/Users/<int:user_id>/Cart/${productId}`, {
+    fetch(`http://127.0.0.1:5000/users/<int:user_id>/cart/${productId}`, {
       method: "DELETE",
     })
       .then(() => {

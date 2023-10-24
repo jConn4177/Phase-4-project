@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, Enum
+from sqlalchemy.orm import validates
 from flask_bcrypt import Bcrypt, generate_password_hash, check_password_hash
 
 convention = {
@@ -31,6 +32,22 @@ class User(db.Model):
             "email": self.email,
             "is_seller": self.is_seller
         }
+
+    @validates('name')
+    def validate_name(self, key, name):
+        if not isinstance(name, str):
+            raise AssertionError('Name must be a string')
+        if len(name) < 2:
+            raise AssertionError('Name must be at least two characters long')
+        return name
+
+    @validates('email')
+    def validate_email(self, key, email):
+        if not isinstance(email, str):
+            raise AssertionError('Email must be a string')
+        if len(email) < 5:
+            raise AssertionError('Email must be at least five characters long')
+        return email
 
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(
