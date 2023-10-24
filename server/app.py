@@ -4,7 +4,7 @@ from flask import Flask, make_response, jsonify, request
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
 # assuming models.py is in the same directory
-from server.models import User, Product, db
+from server.models import User, Product, Cart, db
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, JWTManager
 from datetime import timedelta
@@ -109,6 +109,7 @@ class UserById(Resource):
         db.session.commit()
         return {"message": "User deleted successfully!"}, 200
 
+
 api.add_resource(UserById, "/users/<int:user_id>")
 
 
@@ -131,11 +132,38 @@ class Products(Resource):
 
         # Create a new product instance and add to database
         product = Product(name=data['name'],
-                          price=data['email'], count=data['count'])
+                          # Using get in case it's not provided
+                          description=data.get('description'),
+                          price=data['price'],
+                          # Using get in case it's not provided
+                          image=data.get('image'),
+                          count=data['count'],
+                          category=data.get('category'))  # Using get in case it's not provided
+
         db.session.add(product)
         db.session.commit()
 
         return {"message": "Product created successfully!", "product": {"id": product.id, "name": product.name, "price": product.price, "count": product.count}}, 201
+
+
+class ProductResource(Resource):
+    def get(self, product_id):
+        product = Product.query.get(product_id)
+        if not product:
+            return {"message": "Product not found."}, 404
+        return jsonify(product.to_dict())
+
+    def delete(self, product_id):
+        product = Product.query.get(product_id)
+        if not product:
+            return {"message": "Product not found."}, 404
+        db.session.delete(product)
+        db.session.commit()
+        return {"message": "Product deleted successfully!"}, 200
+
+
+# Add the resource to the API
+api.add_resource(ProductResource, '/products/<int:product_id>')
 
 
 class Carts(Resource):

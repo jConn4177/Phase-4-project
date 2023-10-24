@@ -8,7 +8,9 @@ function Home() {
   return (
     <div>
       <HomeHeader searchInput={searchInput} setSearchInput={setSearchInput} />
+      <h1>Whatcha gonna buy?</h1>
       <ProductList searchInput={searchInput} />
+
     </div>
   );
 }

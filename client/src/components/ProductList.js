@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard.js";
-import NewProductForm from "./NewProductForm.js";
-import ProductDisplay from "./ProductDisplay.js";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import "./ProductList.css";
 
 function ProductList({ searchInput }) {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/Products")
+    fetch("http://127.0.0.1:5000/products")
       .then((response) => response.json())
       .then(setProducts)
       .catch((error) => console.error("Error fetching products:", error));
@@ -23,75 +21,74 @@ function ProductList({ searchInput }) {
         return searchWords.every((word) => {
           const searchTerm = word.trim();
           return product.name.toLowerCase().includes(searchTerm);
-          // || (product.category &&
-          //   product.category.some((category) =>
-          //     category.toLowerCase().includes(searchTerm)
-          //   ))
         });
       })
     : [];
 
-  const handleProductClick = (product) => {
-    setSelectedProduct(product);
-  };
+  const addToCart = (product) => {
+    setCart((prevCart) => [...prevCart, product]);
 
-  const handleProductSubmit = (newProduct) => {
-    setProducts([...products, newProduct]);
+    // Define the user ID. This is just a placeholder.
+    // In a real-world scenario, the user ID would probably come from the logged-in user's state or context.
+    const userId = 1;
+
+    // Define the desired quantity.
+    // This can be modified if you want to let users specify a quantity.
+    const quantity = 1;
+
+    fetch(`http://127.0.0.1:5000/users/${userId}/cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_id: product.id,
+        quantity: quantity,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "Cart updated successfully") {
+          console.log("Product added to cart in database");
+        } else {
+          console.error("Error adding to cart:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
     <div>
-      <ProdCardGrid1
-        products={searchedProducts}
-        handleProductClick={handleProductClick}
-      />
+      <ProdCardGrid1 products={searchedProducts} handleAddToCart={addToCart} />
+      {/* You can also add a section here to display items in the cart if you wish */}
     </div>
   );
 }
 
-function ProdCardGrid1({ products, handleProductClick }) {
+function ProdCardGrid1({ products, handleAddToCart, handleProductClick }) {
   return (
     <div className="card-container">
       <Row xs={1} md={3} className="g-3">
-        {Array.from({ length: 3 }).map((_, idx) => (
+        {products.map((product, idx) => (
           <Col key={idx} className="my-3">
-            {products && products.length > 0 ? (
-              products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onClick={() => handleProductClick(product)}
-                />
-              ))
-            ) : (
-              <div>No products found.</div>
-            )}
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={() => handleAddToCart(product)}
+              handleProductClick={handleProductClick}
+            />
           </Col>
         ))}
+        {products.length === 0 && (
+          <Col>
+            <div>No products found.</div>
+          </Col>
+        )}
       </Row>
     </div>
   );
 }
-
-// function ProdCardGrid1({ products, handleProductClick }) {
-//   return (
-//     <div className="card-container">
-//       {products && products.length > 0 ? (
-//         products.map((product) => (
-//           <Col key={product.id} xs={12} sm={6} md={4}>
-//             <ProductCard
-//               product={product}
-//               onClick={() => handleProductClick(product)}
-//               className="product-card"
-//               key={product.id}
-//             />
-//           </Col>
-//         ))
-//       ) : (
-//         <div>No products found.</div>
-//       )}
-//     </div>
-//   );
-// }
 
 export default ProductList;

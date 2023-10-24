@@ -6,6 +6,12 @@ h5 {
   font-family: "Poppins", sans-serif !important;
 }
 
+.h-card {
+  height: 300px; /* Set a fixed height for the cards */
+  overflow-y: auto; /* Enable vertical scrolling for text overflow */
+  padding: 10px;
+}
+
 .card-container {
   display: flex;
   justify-content: center;
@@ -18,17 +24,28 @@ h5 {
   background-color: #a486d5;
   color: white;
 }
+
 .prod-cards:hover {
   transform: scale(1.05);
-  transition: transform 0.2s ease-in-out; /* 0.5s duration with ease-in-out easing */
-  z-index: 1; /* Ensures the hovered card appears above the other cards */
+  transition: transform 0.2s ease-in-out;
+  z-index: 1;
 }
 
 .prod-card-image {
-  width: 100%; /* or you can specify a fixed width like 150px; */
-  max-width: 200px; /* optional, to ensure it doesn't grow beyond a certain size */
-  height: auto; /* maintain aspect ratio */
-  display: block; /* to remove any unwanted white space */
-  margin: 0 auto; /* to center it if it's smaller than its container */
+  width: 100%;
+  max-width: 200px;
+  height: 150px; /* Set a fixed height for the images */
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+  display: block;
+  margin: 0 auto;
   padding: 5px;
+  border-radius: 10px;
+}
+
+.form-button {
+  background-color: #ffde5c !important;
+}
+
+.card-text, .card-text h1, .card-text h2, .card-text h3, .card-text h4, .card-text h5 {
+  text-align: center;
 }

@@ -6,7 +6,7 @@ h5 {
   font-family: 'Poppins', sans-serif !important;
 }
 
-.register-form {
+.product-form {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@ h5 {
   color: white;
 }
 
-.register-form h1 {
+.product-form h1 {
   color: #54318c;
 }
 
@@ -24,8 +24,8 @@ h5 {
   background-color: #ffde5c !important;
 }
 
-.form-border {
-  width: 54%;
+.product-form .form-border {
+  width: 100%;
   padding: 20px;
   border: 1px solid #333;
   border-radius: 5px;
@@ -34,6 +34,6 @@ h5 {
 }
 
 .login-image {
-  max-width: 40%; /* You can adjust as needed */
+  max-width: 60%; /* You can adjust as needed */
   margin-right: 20px; /* Spacing between the image and the form content */
 }

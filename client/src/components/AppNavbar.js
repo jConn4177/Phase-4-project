@@ -15,9 +15,11 @@ function AppNavbar() {
         <Nav className="flex-grow-1 justify-content-end align-items-center">
           <Nav.Link as={Link} to="/" style={{ marginRight: '10px' }} className="navlink">Home</Nav.Link>
           <Nav.Link as={Link} to="/Dashboard" style={{ marginRight: '10px' }} className="navlink">Dashboard</Nav.Link>
-          <Nav.Link as={Link} to="/Login" className="navlink">Login</Nav.Link>
+          <Nav.Link as={Link} to="/productform" className="navlink">Add Product</Nav.Link>
           <Nav.Link as={Link} to="/Cart" className="navlink">Cart (0)</Nav.Link>
           <Nav.Link as={Link} to="/Register" className="navlink">Register</Nav.Link>
+          <Nav.Link as={Link} to="/Login" className="navlink">Login</Nav.Link>
+
         </Nav>
       </Container>
     </Navbar>
